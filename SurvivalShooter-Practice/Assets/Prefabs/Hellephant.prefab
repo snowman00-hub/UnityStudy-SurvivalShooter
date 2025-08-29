@@ -189,10 +189,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.43
-  m_Height: 1.33
+  m_Radius: 1.14
+  m_Height: 2.35
   m_Direction: 1
-  m_Center: {x: 0, y: 0.59, z: 0}
+  m_Center: {x: 0, y: 0.94, z: 0}
 --- !u!54 &8337410779819575594
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -235,6 +235,8 @@ MonoBehaviour:
   maxHP: 100
   traceDistance: 40
   attackDistance: 0.3
+  attackInterval: 0.5
+  lastAttackTime: 0
   zombieData: {fileID: 11400000, guid: a86dbf84c1356bf4d9fe7a7e5ea73aea, type: 2}
   hitEffect: {fileID: 3682004495817044888}
   targetLayer:

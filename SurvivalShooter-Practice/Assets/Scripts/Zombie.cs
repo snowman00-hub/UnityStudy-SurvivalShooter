@@ -51,7 +51,9 @@ public class Zombie : LivingEntity
     }
 
     public float traceDistance = 10f;
-    public float attackDistance = 0.3f;
+    public float attackInterval = 0.5f;
+    public float lastAttackTime;
+    private float attackDistance = 0.7f;
 
     public ZombieData zombieData;
 
@@ -181,7 +183,26 @@ public class Zombie : LivingEntity
 
     private void UpdateAttack()
     {
-        CurrentStatus = Status.Idle; // 테스트코드
+        if (target == null ||
+            Vector3.Distance(transform.position, target.position) > attackDistance)
+        {
+            CurrentStatus = Status.Trace;
+            return;
+        }
+
+        var lookAt = target.position;
+        lookAt.y = transform.position.y;
+        transform.LookAt(lookAt);
+
+        if (lastAttackTime + attackInterval < Time.time)
+        {
+            lastAttackTime = Time.time;
+            var damagable = target.GetComponent<IDamagable>();
+            if (damagable != null)
+            {
+                damagable.OnDamage(damage, transform.position, -transform.forward);
+            }
+        }
     }
 
     private void UpdateDie()
