@@ -19,6 +19,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        UpdatePosition();
+        UpdateRotation();
+    }
+
+    private void UpdatePosition()
+    {
         Vector3 camForward = Camera.main.transform.forward;
         Vector3 camRight = Camera.main.transform.right;
 
@@ -35,5 +41,19 @@ public class PlayerMovement : MonoBehaviour
 
         bool isMove = rb.linearVelocity.magnitude > 0;
         animator.SetBool(hashMove, isMove);
+    }
+
+    private void UpdateRotation()
+    {
+        Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        float distance;
+        if (groundPlane.Raycast(ray, out distance))
+        {
+            Vector3 hitPoint = ray.GetPoint(distance);
+            hitPoint.y = transform.position.y;
+            transform.LookAt(hitPoint);
+        }
     }
 }
