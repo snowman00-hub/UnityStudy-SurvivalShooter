@@ -4,6 +4,7 @@ using UnityEngine;
 public class Gun : MonoBehaviour
 {
     public float fireDistance = 7f;
+    public float damage = 10f;
 
     public ParticleSystem shotEffect;
 
@@ -37,6 +38,12 @@ public class Gun : MonoBehaviour
             out hit, fireDistance))
         {
             hitPosition = hit.point;
+
+            var target = hit.collider.GetComponent<IDamagable>();
+            if(target != null)
+            {
+                target.OnDamage(damage, hitPosition, hit.normal);
+            }
         }
         else
         {

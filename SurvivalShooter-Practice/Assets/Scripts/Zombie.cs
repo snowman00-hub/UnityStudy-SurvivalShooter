@@ -1,9 +1,10 @@
-﻿using System.Linq;
+﻿using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Audio;
 
-public class Zombie : MonoBehaviour
+public class Zombie : LivingEntity
 {
     private static readonly int hashHasTarget = Animator.StringToHash("HasTarget");
     private static readonly int hashDie = Animator.StringToHash("Die");
@@ -51,18 +52,82 @@ public class Zombie : MonoBehaviour
 
     public float traceDistance = 10f;
     public float attackDistance = 0.3f;
+
+    public ZombieData zombieData;
+
+    public ParticleSystem hitEffect;
+
     public LayerMask targetLayer;
+
+    private float damage;
+    private float score;
 
     private Transform target;
     private Animator animator;
     private NavMeshAgent agent;
+
+    private Rigidbody rb;
     private CapsuleCollider capsuleCollider;
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
+        rb = GetComponent<Rigidbody>();
         capsuleCollider = GetComponent<CapsuleCollider>();
+
+        SetUp();
+    }
+
+    public void SetUp()
+    {
+        maxHP = zombieData.maxHp;
+        agent.speed = zombieData.speed;
+        damage = zombieData.damage;
+        score = zombieData.score;
+    }
+
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+
+        capsuleCollider.enabled = true;
+        rb.isKinematic = true;
+        currentStatus = Status.Idle;
+    }
+
+    public override void OnDamage(float damage, Vector3 hitPoint, Vector3 hitNormal)
+    {
+        base.OnDamage(damage, hitPoint, hitNormal);
+        hitEffect.transform.position = hitPoint;
+        hitEffect.transform.forward = hitNormal;
+        hitEffect.Play();
+    }
+
+    protected override void Die()
+    {
+        base.Die();
+        CurrentStatus = Status.Die;
+    }
+
+    public void StartSinking()
+    {
+        StartCoroutine(CoSinking());
+    }
+
+    private IEnumerator CoSinking()
+    {
+        yield return new WaitForSeconds(1.1f);
+
+        rb.isKinematic = false;
+        agent.enabled = false;
+
+        Destroy(gameObject, 1f);
+        while (true)
+        {
+            transform.position += Vector3.down * 1f * Time.deltaTime;
+            yield return null;
+        }
     }
 
     private void Update()
@@ -117,7 +182,6 @@ public class Zombie : MonoBehaviour
     private void UpdateAttack()
     {
         CurrentStatus = Status.Idle; // 테스트코드
-
     }
 
     private void UpdateDie()
