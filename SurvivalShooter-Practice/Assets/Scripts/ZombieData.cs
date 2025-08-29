@@ -7,4 +7,5 @@ public class ZombieData : ScriptableObject
     public float damage;
     public float speed;
     public float score;
+    public float respawnInterval;
 }

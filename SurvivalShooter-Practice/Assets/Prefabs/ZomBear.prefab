@@ -171,7 +171,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHP: 100
-  traceDistance: 14
+  traceDistance: 40
   attackDistance: 0.3
   zombieData: {fileID: 11400000, guid: 938b9a9d37493504a93e66b5e87918e6, type: 2}
   hitEffect: {fileID: 7797219309894043231}

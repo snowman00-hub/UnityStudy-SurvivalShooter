@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19d52e5019294294790d4f1cbfd0d718, type: 3}
   m_Name: Hellephant
   m_EditorClassIdentifier: 
-  maxHp: 0
-  damage: 0
-  speed: 0
-  score: 0
+  maxHp: 200
+  damage: 33
+  speed: 2.5
+  score: 50
+  respawnInterval: 16
