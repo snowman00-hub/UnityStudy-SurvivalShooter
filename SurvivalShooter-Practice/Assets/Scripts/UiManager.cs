@@ -6,7 +6,9 @@ using System.Collections;
 public class UiManager : MonoBehaviour
 {
     public PlayerHealth playerHealth;
+    public GameObject gameOverEffect;
     public RawImage RedFlash;
+    public Slider hpSlider;
     public Text scoreText;
 
     private void OnEnable()
@@ -17,11 +19,18 @@ public class UiManager : MonoBehaviour
     private void Start()
     {
         playerHealth.OnHurt += () => StartCoroutine(CoRedFlashEffect());
+        playerHealth.OnHurt += () => SetUpdateHpSlider(playerHealth.HP / playerHealth.maxHP);
+        playerHealth.OnDeath += () => gameOverEffect.SetActive(true);
     }
 
     public void SetUpdateScore(float score)
     {
         scoreText.text = $"Score: {score}";
+    }
+
+    public void SetUpdateHpSlider(float value)
+    {
+        hpSlider.value = value;
     }
 
     public IEnumerator CoRedFlashEffect()

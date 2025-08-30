@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using TMPro;
 using UnityEngine;
 
 public class Gun : MonoBehaviour
@@ -11,9 +12,11 @@ public class Gun : MonoBehaviour
     public Transform firePosition;
 
     private LineRenderer lineRenderer;
-    private float LastShootTime;
-    public float shootInterval = 0.1f;
+    public float shootInterval = 0.2f;
     public float effectWaitTime = 0.1f;
+
+    private bool isShooting = false;
+    Vector3 hitPosition = Vector3.zero;
 
     private void Awake()
     {
@@ -22,17 +25,15 @@ public class Gun : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButton(0) && LastShootTime + shootInterval < Time.time)
+        if (isShooting)
         {
-            LastShootTime = Time.time;
-            Shoot();
-        }   
+            lineRenderer.SetPosition(0, firePosition.position);
+            lineRenderer.SetPosition(1, hitPosition);
+        }
     }
 
     public void Shoot()
     {
-        Vector3 hitPosition = Vector3.zero;
-
         RaycastHit hit;
         if (Physics.Raycast(firePosition.position, firePosition.forward,
             out hit, fireDistance))
@@ -60,8 +61,11 @@ public class Gun : MonoBehaviour
         lineRenderer.SetPosition(0, firePosition.position);
         lineRenderer.SetPosition(1, hitPosition);
 
+        isShooting = true;
+
         yield return new WaitForSeconds(effectWaitTime);
 
         lineRenderer.enabled = false;
+        isShooting = false;
     }
 }

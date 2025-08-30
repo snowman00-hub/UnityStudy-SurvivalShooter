@@ -239,6 +239,7 @@ MonoBehaviour:
   traceDistance: 40
   attackInterval: 0.5
   lastAttackTime: 0
+  attackDistance: 2.5
   zombieData: {fileID: 11400000, guid: a86dbf84c1356bf4d9fe7a7e5ea73aea, type: 2}
   hitEffect: {fileID: 3682004495817044888}
   hurtClip: {fileID: 8300000, guid: fce027b40770a44298a6f5a4233bfb04, type: 3}

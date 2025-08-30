@@ -54,7 +54,7 @@ public class Zombie : LivingEntity
     public float traceDistance = 10f;
     public float attackInterval = 0.5f;
     public float lastAttackTime;
-    private float attackDistance = 0.7f;
+    public float attackDistance = 1f;
 
     public ZombieData zombieData;
 
