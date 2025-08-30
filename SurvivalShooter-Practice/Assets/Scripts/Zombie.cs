@@ -43,6 +43,7 @@ public class Zombie : LivingEntity
                     break;
                 case Status.Die:
                     animator.SetTrigger(hashDie);
+                    audioSource.PlayOneShot(deathClip);
                     agent.isStopped = true;
                     capsuleCollider.enabled = false;
                     break;
@@ -58,6 +59,8 @@ public class Zombie : LivingEntity
     public ZombieData zombieData;
 
     public ParticleSystem hitEffect;
+    public AudioClip hurtClip;
+    public AudioClip deathClip;
 
     public LayerMask targetLayer;
 
@@ -66,6 +69,7 @@ public class Zombie : LivingEntity
 
     private Transform target;
     private Animator animator;
+    private AudioSource audioSource;
     private NavMeshAgent agent;
 
     private Rigidbody rb;
@@ -74,6 +78,7 @@ public class Zombie : LivingEntity
     private void Awake()
     {
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
         agent = GetComponent<NavMeshAgent>();
         rb = GetComponent<Rigidbody>();
         capsuleCollider = GetComponent<CapsuleCollider>();
@@ -104,6 +109,7 @@ public class Zombie : LivingEntity
         hitEffect.transform.position = hitPoint;
         hitEffect.transform.forward = hitNormal;
         hitEffect.Play();
+        audioSource.PlayOneShot(hurtClip);
     }
 
     protected override void Die()
