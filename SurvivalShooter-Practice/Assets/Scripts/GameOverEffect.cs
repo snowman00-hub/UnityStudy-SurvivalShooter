@@ -13,11 +13,12 @@ public class GameOverEffect : MonoBehaviour
     {
         image = GetComponent<Image>();
         scoreText.transform.SetParent(transform, false);
-        StartCoroutine(CoFadeIn());
         StartCoroutine(CoReStart());
     }
 
-    public IEnumerator CoFadeIn()
+    // 가리는게 FadeOut
+    // 서서히 본영상이 나오면 FadeIn
+    public IEnumerator CoFadeOut()
     {
         float timer = 0f;
         float fadeDuration = 1f;        
@@ -37,7 +38,9 @@ public class GameOverEffect : MonoBehaviour
 
     public IEnumerator CoReStart()
     {
-        yield return new WaitForSeconds(3.7f);
+        yield return StartCoroutine(CoFadeOut());
+
+        yield return new WaitForSeconds(2.7f);
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
